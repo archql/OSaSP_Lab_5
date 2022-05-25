@@ -1,0 +1,28 @@
+#!/bin/bash
+# check args
+if [ $# -le 1 ]
+then
+	echo "Usage: [c lang source file] [output filename] [executinal args]"
+	exit
+fi
+# check if input file exists
+if ! [ -f $1 ] || ! [[ $1 =~ \.c$ ]]
+then
+	echo "Error: Wrong arg. 1st arg is [c lang source file]">&2
+	exit
+fi
+# compile
+gcc $1 -o $2".exe" -lpthread
+# check
+if [ $? -ne 0 ]
+then
+	echo "Compilation error! Closing..">&2
+	exit
+fi
+echo "Compilation success! Exucuting.."
+# execute
+./$2".exe" $3 $4 $5 $6 # temp solution
+# end
+
+#alternative variant (w/out error echo)
+# gcc $1 -o $2".exe" && { ./$2".exe"; echo "Compilation success! Exucuting..";  }
